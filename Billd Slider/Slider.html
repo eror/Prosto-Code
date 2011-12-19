@@ -1,0 +1,128 @@
+<html>
+  <head>
+    <title>Bild Slider</title>
+	<meta http-equiv="x-ua-compatible" content="IE=8">
+  </head>
+  <body >
+
+	Bild Slider für IE  meta eintragen
+	<table>
+	<tr>
+		<td>dfasdfsadfasd</td>
+	<td>
+	<div id = 'bildSlider'>
+		<img src="#"  style='width:250px; height:180px;'/></div>
+	</td></tr>
+	</table>
+	<div id="fadeBlock" style="background-color:Lime;width:250px;
+		  height:65px;text-align:center;">
+	  <br />
+	  I'm Some Text
+	</div>
+	<br />
+
+<script type="text/javascript" >
+	/**
+	*	Copyright (c) 2011 Dipl.-Ing Georg Seel MIT License
+	*	imgSlider v1.0.0
+	*	obj=imgSlider({param})
+	*	@params = {id, img[], interval=5, fadeTime=2}
+	*	@obj = {id}
+	*/
+	
+	var imgSlider = (function(){
+
+	
+		function nextImg (o){
+			if(!o) return ;
+			var div = document.getElementById(o.id);
+			var tempLeft =div.children[o.actImg].offsetLeft;
+			div.children[o.actImg].style.position='absolute';
+			div.children[o.actImg].style.left=tempLeft;
+			console.log(tempLeft);
+			o.nextImg = o.actImg+1;
+			o.nextImg = (o.nextImg < o.img.length)? o.nextImg : 0; 
+				
+			var nEl;
+			
+			if ( div.children[o.nextImg]){
+				div.children[o.nextImg].style.position='relative';
+				div.children[o.nextImg].style.left='';				
+			
+			}else{
+				nEl = div.children[0].cloneNode(true);
+				nEl.src =o.img[o.nextImg];
+				nEl.style.display = '';
+				nEl.style.opacity  = '0.00';
+				nEl.style.filter = 'alpha(opacity = "1")';
+				nEl.style.position='';
+				nEl.height=	div.children[0].height;	//IE
+				nEl.width=	div.children[0].width;	//IE
+				div.appendChild(nEl);
+				
+			}
+			fade(o);
+		}
+		function fade(o)
+		{  	
+			if(!o) return ;
+			var el1 = document.getElementById(o.id).children[o.actImg];
+			var el2 = document.getElementById(o.id).children[o.nextImg];
+			var op = parseFloat(el2.style.opacity) || 0;
+			var time=20;
+			
+			if (op  >= 1) {
+				o.actImg++;
+				o.actImg = (o.actImg < o.img.length)? o.actImg : 0;
+				setTimeout(function(){nextImg(o)}, o.interval*1000);
+			}
+
+			else{
+				op  += time/o.fadeTime/1000;
+				if (op>1) op = 1;
+
+				el1.style.opacity  = 1-op;
+				el2.style.opacity  = op;
+				el1.style.filter = 'alpha(opacity = "'+(1-op)*100+'")';
+				el2.style.filter = 'alpha(opacity = "'+op*100+'")';
+				
+				setTimeout(function(){fade(o)}, time);
+			}
+		}
+		var slider =function(o){
+			o.interval = o.interval || 5;
+			o.fadeTime = o.fadeTime || 2;
+			o.actImg = 0;
+			var el = document.getElementById(o.id);
+			el.style.position='relative';
+			el.children[0].src = o.img[0];
+			el.children[0].style.left=el.children[0].offsetLeft;
+			if( o.img.length > 1 ) setTimeout(function(){nextImg(o)}, o.interval*1000);
+			
+			return {
+				//stop:
+				id: o.id
+			}
+		
+		};
+		
+		return slider;
+
+	
+	})();
+	
+	var iSr = imgSlider({
+		id:'bildSlider',
+		img:['./fruits.jpg','./dog.jpg','./pool.jpg','./cave.jpg'],
+		interval:2,
+		fadeTime:0.5
+
+	});
+
+	
+ </script>
+
+	<br />
+	<input type="button" onclick="fade('fadeBlock');" value="Go" />
+  </body>
+</html>

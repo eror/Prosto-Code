@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <title>demo</title>
+  <script language='JavaScript' type='text/JavaScript' src='xBox.js'></script>
+  <script language='JavaScript' type='text/JavaScript' >
+	window.addEventListener('click', function(ev) {
+		if (ev.button != 2) return;
+		var text;
+		
+		if (text = window.getSelection().toString()){       
+		}else if (ev.target.value){                      // get Selection from input target
+			try {                                        // for type without selectionStart/selectionEnd like Butto or Radio
+				text = ev.target.value.substring(ev.target.selectionStart, ev.target.selectionEnd);
+			}catch(e){}
+		}console.log('textnNachSelect '+text);
+		
+		if (!text){ 
+			var mausPos = ev.rangeOffset; console.log('mausPos ' + mausPos);
+			if (ev.rangeParent){ 
+				if (ev.explicitOriginalTarget==ev.rangeParent && ev.explicitOriginalTarget.nodeName!='BODY'){
+					text=ev.rangeParent.textContent; 
+				}else if(ev.explicitOriginalTarget.nodeName=='BUTTON'){
+					text=ev.rangeParent.textContent;
+				}else { 
+					self.port.emit('onContext', text);
+					return;
+				}
+			}else if (ev.target.value) text=ev.target.value;
+			else { 
+				self.port.emit('onContext', text);
+				return;
+			}
+			var start = text.lastIndexOf(' ', mausPos)+1; //search
+			var end = text.indexOf(' ',mausPos);
+			if ( end == -1) end = text.lenght;
+			text = text.slice(start,end);
+		}
+		console.log();
+		//self.port.emit('onContext', text);
+		xBox({text:text,top:ev.pageY+'px',left:ev.pageX+'px'});
+		//Messege({text:text,top:'100px',left:'100px'});
+		
+		
+	},true);
+  
+  
+  
+	var a ={a:2};
+	function start(){
+		var i = xBox({xwidth:'76px',xheight:'90px',
+			text:"The kjdsoifi  fdg fdg dfgfgdsg rte  dfgdfgdf fdgsjdisfjoi fghdfgsdfls jlkdfuaekurp pdufl jldsrui poisrj lzusidrp ejdflau"
+		});
+		var q = xBox({
+			text:"qqThe kjdsoifi jdisfjoisdfls jlkdfuaekurp pdufl jldsrui poisrj lüsidrp ejdflau"
+		});
+		var w = xBox({
+			text:"qqThe kjdsoifi jdisfjoisdfls jlkdfuaekurp pdufl jldsrui poisrj lösidrp ejdflau"
+		});
+	}
+  
+  </script>
+</head>
+<body onload='start()'>
+<div id='xMessage99999'  style=' width:80px; height:50px;  z-index:1000; '>
+	<div style=' padding-bottom:32px; border:3px solid #BBCCFF; height:100%; width:100%;  color:black; font-size: 12pt; line-height:100%; background-color:#EAEAEA;'>
+	<div style='height:18px; background:#BBCCFF; padding-left:3px;padding-right:3px; font-weight:bold; cursor:move; -moz-user-select:none; -webkit-user-select:none;' unselectable='on'>
+			TEST
+			<span style='float:right; cursor:pointer;'> X </span>
+		</div>
+	<!--<div style='border-top: 1px solid #999;'></div>
+
+		<div style='margin-bottom:-32px; height:100%;' >
+			<div style='padding:7px; overflow: auto; height:100%; '>
+				The kjdsoifi  fdg fdg dfgfgdsg rte  dfgdfgdf fdgsjdisfjoi fghdfgsdfls jlkdfuaekurp pdufl jldsrui poisrj lzusidrp ejdflau
+			</div>
+		</div>-->
+		<!--<div style='position:absolute; display: block; background-color:#BBCCFF; width:7px; height: 8px; bottom:-1px; right:0px; cursor: se-resize; user-select:none; -webkit-user-select:none; -moz-user-select:none; ' unselectable='on' ></div>-->
+	<div style=' xmargin-bottom:-35px; padding:0px; overflow: auto; height:inherit; '>
+				The kjdsoifi  fdg fdg dfgfgdsg rte  dfgdfgdf fdgsjdisfjoi fghdfgsdfls jlkdfuaekurp pdufl jldsrui poisrj lzusidrp ejdflau
+	</div>
+	</div>
+
+</div>
+<BR>
+<BR>
+<BR>
+
+
+<div style="border-width: 1px;" class="panel"><div style="border-bottom-width: 1px;" class="panelHeader"><b>FormsForWeb Design&reg; 3.1.1 Documentation</b></div><div class="panelContent">
+<p><a title="User Guide" href="/display/LIP311EN/User+Guide">User Guide</a></p>
+
+<p><a title="Formsets" href="/display/LIP311EN/Formsets">Formsets</a></p>
+
+<p><a href="/display/LIP311EN/Release+Notes#ReleaseNotes-FormsForWebDesign3.1.1">Release Notes</a></p>
+</div></div>
+<h3><a name="SystemRequirements-Systemrequirements"></a>System requirements</h3>
+<p>The Lucom Interaction Platform demands an operating system for which the following components are available:</p>
+<ol>
+	<li>A servlet 2.4/JSP 2.0 interoperable servlet engine, e.g. a J2EE compliant application server (same servlet/JSP version number)</li>
+	<li>Java 	Development Kit (JDK) 5.0 or higher</li>
+	<li>An SQL database with a JDBC 2.0 compliant driver</li>
+</ol>
+<input name="zuname" type="text" size="30" maxlength="40"></p>
+<input name="zuname" type="text" size="30" maxlength="40" value='dfsa dfsad dfsa '></p>
+<input name="kennwort" type="password" size="12" maxlength="12">
+<textarea name="user_eingabe" cols="50" rows="10"></textarea
+<input type="radio" name="Zahlmethode" value="Visa"> Visa<br>
+<input type="checkbox" name="zutat" value="salami"> Salami<br>
+<h5><a name="SystemRequirements-Applicationserver"></a>Application server</h5>
+<p><b>Minimum requirements:</b> The application server must be corresponding to the <tt>J2EE 1.4</tt> specifiations of <em>Sun</em> and support the servlet specifiations 2.4 as well as the JSP-specifiations 2.0.</p>
+
+
+<input type=button value='demo' onclick='Messege("The usegdfgr has clghdfhgfdhgfghfghfghfhgfhdfhfghdficked this button");'>
+<br>
+
+</body >
+</html>
