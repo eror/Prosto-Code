@@ -5,31 +5,24 @@
 	* { margin: 0; padding: 0; }
 	#main{margin :12px}
 
-	#tabmenu {
-		margin-bottom: 4px;
-		position: relative;
-		z-index: 2;
-	}
-	#tabmenu li { 
-		display: inline;
-		list-style-type:
-		none; margin-right: -4px;
-		
-	} 
-	#tabmenu li a { 
-		color: black; 
+	#tabmenu {position: relative;z-index: 2;}
+	#tabmenu > div { display: inline-block;} 
+	#tabmenu > div > a { 
+		color: black;
+		display: inline-block;		
 		background: -moz-linear-gradient(top, #EEEEEE, #DDDDDD); 
 		border: 2px solid #BBBBBB;
 		border-radius: 2px;
 		padding: 4px 10px; 
-		margin-right: -2px;
+		margin-right: -6px;  /* -4px ist umbruch im Text*/
+		margin-bottom: -2px;
 		text-decoration: none;
+		width:100%
 	} 
-	#tabmenu a.active { background: #ffffff; border-bottom: 3px solid #ffffff; } 
-	#tabmenu a:hover { background: #eee; border: 2px solid #BBBBBB; } 
-	#tabmenu a.active:hover { background: #eee; } 
+	#tabmenu a.active { background: #ffffff; border-bottom: 2px solid #ffffff; } 
+	#tabmenu a:hover { background: #eee } 
 	
-	.tabBody {
+	.xTabBody {
 		display:none;
 		position: relative;
 		border: 2px solid #BBBBBB;
@@ -44,24 +37,24 @@
 
 			<div>dfa</div>
 		<div id ='main'>
-			<ul id="tabmenu" > 
-				<li><a onclick="makeactive(this)" class="active" href="#body1">First Page</a></li>
-				<li><a onclick="makeactive(this)"  href="#body2">Second Page</a></li>
-				<li><a onclick="makeactive(this)"  href="#body3">Third Page</a></li> 
-			</ul> 
-			<div id="body1" class='tabBody' style=' display:block'>
+			<div id="tabmenu" > 
+				<div><a onclick="makeactive(this)" class="active" href="#body1">First Page</a></div>
+				<div><a onclick="makeactive(this)"  href="#body2">Second Page</a></div>
+				<div><a onclick="makeactive(this)"  href="#body3">Third Page</a></div> 
+			</div> 
+			<div id="body1" class='xTabBody' style=' display:block'>
 					fdjkjflkgs
 					<div>dfa</div>
 					<div>dfa</div>
 					<div>dfa</div>
 			</div> 
-			<div id="body2" class='tabBody'>
+			<div id="body2" class='xTabBody'>
 					fdjkjflkgsfgdsf
 					fgsdf
 					gdfsgfgsd
 
 			</div> 
-			<div id="body3" class='tabBody'>
+			<div id="body3" class='xTabBody'>
 					fdjkjflkgsfgdsf
 					fgsdf
 					gdfsgfgsd
@@ -80,6 +73,6 @@
 			if( anker == "" || !document.querySelector(anker)) anker ='#body1';
 			document.getElementById('tabmenu').querySelector('a[href="'+anker+'"]').click();
 
-    </script>
-  </body>
+		</script>
+	</body>
 </html>
