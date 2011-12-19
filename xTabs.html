@@ -1,142 +1,85 @@
-<!DOCTYPE html>
 <html>
-<head>
-        <meta charset="UTF-8">
-        
-        <title>CSS Tabs</title>
-                
-    <style>
-        * { margin: 0; padding: 0; }
+  <head>
+    <title>xTabs</title>
+	<style>
+	* { margin: 0; padding: 0; }
+	#main{margin :12px}
 
-        h1 { font: 36px Georgia, Serif; margin: 20px 0; }
-        .group:after { visibility: hidden; display: block; font-size: 0; content: " "; clear: both; height: 0; }
+	#tabmenu {
+		margin-bottom: 4px;
+		position: relative;
+		z-index: 2;
+	}
+	#tabmenu li { 
+		display: inline;
+		list-style-type:
+		none; margin-right: -4px;
+		
+	} 
+	#tabmenu li a { 
+		color: black; 
+		background: -moz-linear-gradient(top, #EEEEEE, #DDDDDD); 
+		border: 2px solid #BBBBBB;
+		border-radius: 2px;
+		padding: 4px 10px; 
+		margin-right: -2px;
+		text-decoration: none;
+	} 
+	#tabmenu a.active { background: #ffffff; border-bottom: 3px solid #ffffff; } 
+	#tabmenu a:hover { background: #eee; border: 2px solid #BBBBBB; } 
+	#tabmenu a.active:hover { background: #eee; } 
+	
+	.tabBody {
+		display:none;
+		position: relative;
+		border: 2px solid #BBBBBB;
+		border-radius: 2px;
+	} 
 
-        
-        .tabs { list-style: none; }
-        .tabs li { display: inline; }
-        .tabs li a { 
-			color: black;
-			padding: 4px 10px; 
-			margin-left: -1px;
-			float: left; display: block;  position: relative; left: 1px; background: white; text-decoration: none;  }
-        .tabs li a:hover { background: red; }
-        
-        
-        /* Generic styles & example one */
-        
-        .tabbed-area { margin: 0 0 120px 0; }
-        .box-wrap { position: relative; min-height: 250px; }
-        .tabbed-area div div { background: white; padding: 20px; min-height: 250px; position: absolute; top: -1px; left: 0; width: 100%; }
-        .tabbed-area div div, .tabs li a { border: 1px solid #ccc; }
-        
-        
-        /* Stuff for example three */
-        
-        .cur-nav-fix-2 .tabs li a { background: -moz-linear-gradient(top, white, #eee); }
-        c.cur-nav-fix-2 .tabs { z-index: 2; position: relative; }
-        #xxxxbox-seven:target .box-seven,
-        #xxxxbox-eight:target .box-eight,
-        #xxxxbox-nine:target .box-nine { z-index: 1; }
-        #box-seven:target a[href="#box-seven"],
-        #box-eight:target a[href="#box-eight"],
-        #box-nine:target a[href="#box-nine"] { border-bottom: 1px solid white; background: white; }
+	</style>
+  </head>
+  <body>
+		sadf
+		<div>dfa</div>
 
-        
-        /* Stuff for example five */
-        
-        .adjacent { position: relative; margin-top: 50px; min-height: 300px; }
-        .adjacent div { border: 1px solid #ccc; background: white; padding: 20px; min-height: 250px; position: absolute; top: -1px; left: 0; width: 100%; }
-        .adjacent .tabs { position: absolute; bottom: 100%; left: 0; z-index: 2; }
-        .adjacent .tabs li a { background: -moz-linear-gradient(top, white, #eee); }
-        #box-thirteen:target,
-        #box-fourteen:target,
-        #box-fifteen:target { z-index: 1; }
-        #box-thirteen:target ~ .tabs a[href='#box-thirteen'],
-        #box-fourteen:target ~ .tabs a[href='#box-fourteen'],
-        #box-fifteen:target ~ .tabs a[href='#box-fifteen'] { background: white; border-bottom: 1px solid white; }
+			<div>dfa</div>
+		<div id ='main'>
+			<ul id="tabmenu" > 
+				<li><a onclick="makeactive(this)" class="active" href="#body1">First Page</a></li>
+				<li><a onclick="makeactive(this)"  href="#body2">Second Page</a></li>
+				<li><a onclick="makeactive(this)"  href="#body3">Third Page</a></li> 
+			</ul> 
+			<div id="body1" class='tabBody' style=' display:block'>
+					fdjkjflkgs
+					<div>dfa</div>
+					<div>dfa</div>
+					<div>dfa</div>
+			</div> 
+			<div id="body2" class='tabBody'>
+					fdjkjflkgsfgdsf
+					fgsdf
+					gdfsgfgsd
 
+			</div> 
+			<div id="body3" class='tabBody'>
+					fdjkjflkgsfgdsf
+					fgsdf
+					gdfsgfgsd
+			</div> 
+		</div>
+		<script	type="text/javascript"> 
+			function makeactive(tab) {
+				var oldTab =tab.parentNode.parentNode.getElementsByClassName('active')[0];
+				oldTab.className = "";
+				tab.className = "active";
+				document.querySelector(oldTab.attributes.href.nodeValue).style.display='none';
+				document.querySelector(tab.attributes.href.nodeValue).style.display='block';
+			}
+			var anker=window.location.hash;
+            anker=anker.split('?')[0];
+			if( anker == "" || !document.querySelector(anker)) anker ='#body1';
+			document.getElementById('tabmenu').querySelector('a[href="'+anker+'"]').click();
 
-
-    </style>
-
-<body>
-
-   
-  
-            
-            <p>This has current navigation highlighting. The only downside is that it requires as 
-            many wrapping divs as there are panels.</p>
-            
-            <div id="box-seven"><div id="box-eight"><div id="box-nine">
-            
-                <div class="tabbed-area cur-nav-fix-2">
-                    
-                    <ul class="tabs group">
-                        <li><a href="#box-seven">Tab 7</a></li>
-                        <li><a href="#box-eight">Tab 8</a></li>
-                        <li><a href="#box-nine">Tab 9</a></li>
-                    </ul>
-                    
-                    <div class="box-wrap">
-                    
-                        <div class="box-seven">
-                            <ul>
-                                <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
-                                <li>Aliquam tincidunt mauris eu risus.</li>
-                                <li>Vestibulum auctor dapibus neque.</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="box-eight">
-                            <p>Feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>
-                        </div>
-                        
-                        <div class="box-nine">
-                            <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
-                        </div>
-                        
-                    </div>
-                    
-                </div>
-                
-            </div></div></div>
-            
-            
-          
-            <p>This is handles current navigation highlighting, with pretty clean HTML. The only downside is 
-            that the list for the tab navigation comes <em>after</em> the panels.</p>
-            
-            <div class="tabbed-area adjacent">
-                                
-                <div id="box-thirteen">
-                    <ul>
-                        <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
-                        <li>Aliquam tincidunt mauris eu risus.</li>
-                        <li>Vestibulum auctor dapibus neque.</li>
-                    </ul>
-                </div>
-                
-                <div id="box-fourteen">
-                    <p>Feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>
-                </div>
-                
-                <div id="box-fifteen">
-                    <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
-                </div>
-                
-                <ul class="tabs group">
-                    <li><a href="#box-thirteen">Tab 13</a></li>
-                    <li><a href="#box-fourteen">Tab 14</a></li>
-                    <li><a href="#box-fifteen">Tab 15</a></li>
-                </ul>
-            
-            </div>
-
-               
-
-        
-
-</body>
-
+    </script>
+  </body>
 </html>
-
