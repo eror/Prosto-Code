@@ -17,7 +17,6 @@
 		margin-right: -6px;  /* -4px ist umbruch im Text*/
 		margin-bottom: -2px;
 		text-decoration: none;
-		width:100%
 	} 
 	#tabmenu a.active { background: #ffffff; border-bottom: 2px solid #ffffff; } 
 	#tabmenu a:hover { background: #eee } 
@@ -71,7 +70,7 @@
 			var anker=window.location.hash;
             anker=anker.split('?')[0];
 			if( anker == "" || !document.querySelector(anker)) anker ='#body1';
-			document.getElementById('tabmenu').querySelector('a[href="'+anker+'"]').click();
+			//document.getElementById('tabmenu').querySelector('a[href="'+anker+'"]').click();
 
 		</script>
 	</body>
