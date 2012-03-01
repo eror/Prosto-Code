@@ -50,6 +50,10 @@ var xBox = (function(){
 		var	dy = page.Y - parseInt(drag.style["top"]);
 		drag.style["opacity"]= 0.60;
 		drag.style["zIndex"]= 1000+(++id);
+		var sheet = document.createElement('style')
+		sheet.innerHTML = "* { -moz-user-select: -moz-none; -khtml-user-select: none; -webkit-user-select: none; user-select: none;}";
+		document.body.appendChild(sheet);
+		
 		var mouseMove =  function (e) {
 			e = ie.event(e);
 			var page = ie.page(e),
@@ -64,6 +68,7 @@ var xBox = (function(){
 		
 		var mouseUp = function(e){
 			drag.style["opacity"]= 1;
+			document.body.removeChild(sheet);
 			ie.removeEvent(document,"mousemove",mouseMove);
 			ie.removeEvent(document,"mouseup",mouseUp);
 		}
@@ -84,7 +89,10 @@ var xBox = (function(){
 		rs.style["height"] = orgH+"px";
 		rs.style["width"]  = orgW+"px";
 		rs.style["maxWidth"]='';
-		rs.style["-webkit-user-select"]='none';		
+		var sheet = document.createElement('style')
+		sheet.innerHTML = "* { -moz-user-select: -moz-none; -khtml-user-select: none; -webkit-user-select: none; user-select: none;}";
+		document.body.appendChild(sheet);	
+		
 		var mouseMove =  function (e) {
 			e = ie.event(e);
 			var page = ie.page(e),
@@ -99,9 +107,10 @@ var xBox = (function(){
 		ie.addEvent(document,"mousemove",mouseMove);
 		
 		var mouseUp = function(e){
+			document.body.removeChild(sheet);
 			ie.removeEvent(document,"mousemove",mouseMove);
 			ie.removeEvent(document,"mouseup",mouseUp);
-			rs.style["-webkit-user-select"]='';	
+			
 		};
 		
 		ie.addEvent(document,"mouseup",mouseUp);
