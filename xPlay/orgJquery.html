@@ -1,0 +1,262 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Player MP3 JS</title>
+		<style type="text/css">
+		html {
+			background-color: #7f7f8e;
+			color: #fff;
+		}
+		body {
+			background: #fff;
+			color: #000;
+			border: solid 5px #9494A5;
+			padding: 1em;
+			margin: 1em 2em 1em 2em;
+		}
+		h1 {
+			text-align: center;
+			border-bottom: solid 2px #ccc;
+		}
+		
+		/* ==================== Player ==================== */
+		#player {
+			background-color: #e9f6ff;
+			color: #000;
+			height: 20px;
+			width: 200px;
+			border: solid 3px #ddd;
+		}
+		#player .button {
+			width: 20px;
+			height: 20px;
+			background-repeat: no-repeat;
+			background-position: 2px 2px;
+			float: left;
+		}
+		#player .button a {
+			display: block;
+			height: 20px;
+			text-indent: -100em;
+			overflow: hidden;
+		}
+		#player #timeline {
+			position: relative;
+		}
+		#player #timeline a {
+			position: absolute;
+			left: 40px;
+			display: block;
+			height: 20px;
+			width: 40px;
+			text-indent: -100em;
+			overflow: hidden;
+			background-image: url(images/control_slider.png);
+		}
+		#player #timeline a:hover {
+			background-image: url(images/control_slider_blue.png);
+		}
+		#player .play {
+			background-image: url(images/control_play.png);
+		}
+		#player .play:hover {
+			background-image: url(images/control_play_blue.png);
+		}
+		#player .pause {
+			background-image: url(images/control_pause.png);
+			display: none;
+		}
+		#player .pause:hover {
+			background-image: url(images/control_pause_blue.png);
+		}
+		#player .stop {
+			background-image: url(images/control_stop.png);
+		}
+		#player .stop:hover {
+			background-image: url(images/control_stop_blue.png);
+		}
+		
+		</style>
+		<script src='http://code.jquery.com/jquery-1.7.2.min.js'></script>
+        <script type="text/javascript">
+        	var myListener = new Object();
+        	
+        	/**
+        	 * Initialize
+        	 */
+        	myListener.onInit = function()
+        	{
+				
+				$("#playerslider").mousedown(function(){
+					sliderPressed = true;
+				});
+				$("#playerslider").on("dragstart", function() {
+					 return false;
+				});
+				$(document).mousemove(function(e){
+					if (sliderPressed) {
+						var timelineWidth = 160;
+						var sliderWidth = 40;
+						var sliderPositionMin = 40;
+						var sliderPositionMax = sliderPositionMin + timelineWidth - sliderWidth;
+						var startX=$('#timeline').offset().left;
+						var x = e.pageX - sliderWidth / 2;
+						if (x < startX) {
+							var position = 0;
+						} else if (x > startX + timelineWidth) {
+							var position = myListener.duration;
+						} else {
+							var position = Math.round(myListener.duration * (x - startX - sliderWidth) / (startX + timelineWidth - sliderWidth - startX));
+						}
+						$('#myFlash')[0].SetVariable("method:setPosition", position);
+						return true;
+					}
+				});
+				$(document).on('mouseup',function(){
+					sliderPressed = false;
+					return true;
+				});
+
+        	};
+        	/**
+        	 * Update
+        	 */
+        	myListener.onUpdate = function()
+        	{
+        		var isPlaying = this.isPlaying; // return String 'true'||'false'
+           		var url = this.url;
+           		var volume = this.volume;
+           		var position = this.position;
+            	var duration = this.duration;
+            	
+            	var id3_artist = this.id3_artist;
+            	var id3_album = this.id3_album;
+            	var id3_songname = this.id3_songname;
+            	var id3_genre = this.id3_genre;
+            	var id3_year = this.id3_year;
+            	var id3_track = this.id3_track;
+            	var id3_comment = this.id3_comment;
+            	
+            	document.getElementById("info_playing").innerHTML = isPlaying;
+            	document.getElementById("info_url").innerHTML = url;
+            	document.getElementById("info_volume").innerHTML = volume;
+            	document.getElementById("info_position").innerHTML = position;
+            	document.getElementById("info_duration").innerHTML = duration;
+            	document.getElementById("info_bytes").innerHTML = this.bytesLoaded + "/" + this.bytesTotal + " (" + this.bytesPercent + "%)";
+            	
+            	document.getElementById("info_id3_artist").innerHTML = id3_artist;
+            	document.getElementById("info_id3_album").innerHTML = id3_album;
+            	document.getElementById("info_id3_songname").innerHTML = id3_songname;
+            	document.getElementById("info_id3_genre").innerHTML = id3_genre;
+            	document.getElementById("info_id3_year").innerHTML = id3_year;
+            	document.getElementById("info_id3_track").innerHTML = id3_track;
+            	document.getElementById("info_id3_comment").innerHTML = id3_comment;
+            	
+            	if (isPlaying=='true'){
+					document.getElementById("playerplay").style.display = "none";
+					document.getElementById("playerpause").style.display = "block";
+				}else{
+					document.getElementById("playerplay").style.display = "block";
+					document.getElementById("playerpause").style.display = "none";
+					$('#myFlash')[0].SetVariable("enabled", "false");
+				}
+           		
+            	var timelineWidth = 160;
+            	var sliderWidth = 40;
+            	var sliderPositionMin = 40;
+            	var sliderPositionMax = sliderPositionMin + timelineWidth - sliderWidth;
+            	var sliderPosition = sliderPositionMin + Math.round((timelineWidth - sliderWidth)* position / duration);
+            	
+            	if (sliderPosition < sliderPositionMin) {
+            		sliderPosition = sliderPositionMin;
+            	}
+            	if (sliderPosition > sliderPositionMax) {
+            		sliderPosition = sliderPositionMax;
+            	}
+            	
+            	document.getElementById("playerslider").style.left = sliderPosition+"px";
+        	};
+        	
+        	/**
+        	 * private functions
+        	 */
+        	var sliderPressed = false;
+
+       	
+        	/**
+        	 * public functions
+        	 */
+            function load() {
+            	if (myListener.url == undefined) {
+                	//$('#myFlash')[0].SetVariable("method:setUrl", "test.mp3");
+					//$('#myFlash')[0].SetVariable("method:setUrl", "http://flash-mp3-player.net/medias/another_world.mp3");
+					//$('#myFlash')[0].SetVariable("method:setUrl", "http://www.schillmania.com/projects/soundmanager2/demo/_mp3/rain.mp3");
+					$('#myFlash')[0].SetVariable("method:setUrl", "http://s3.amazonaws.com/audiojs/02-juicy-r.mp3");
+					
+                }
+
+				$('#myFlash')[0].SetVariable("method:play", "");
+				$('#myFlash')[0].SetVariable("enabled", "true");
+				$('#myFlash')[0].SetVariable("method:stop", "");
+            }
+			function play() {
+            	if (myListener.url == undefined) {
+                	//$('#myFlash')[0].SetVariable("method:setUrl", "test.mp3");
+					//$('#myFlash')[0].SetVariable("method:setUrl", "http://flash-mp3-player.net/medias/another_world.mp3");
+					//$('#myFlash')[0].SetVariable("method:setUrl", "http://www.schillmania.com/projects/soundmanager2/demo/_mp3/rain.mp3");
+					$('#myFlash')[0].SetVariable("method:setUrl", "http://s3.amazonaws.com/audiojs/02-juicy-r.mp3");
+					
+                }
+
+				$('#myFlash')[0].SetVariable("method:play", "");
+				$('#myFlash')[0].SetVariable("enabled", "true");
+            }
+            function pause() {
+                $('#myFlash')[0].SetVariable("method:pause", "");
+            }
+            function stop() {
+                $('#myFlash')[0].SetVariable("method:stop", "");
+				
+            }
+        </script>
+        <!--[if IE]>
+		<script type="text/javascript" event="FSCommand(command,args)" for="myFlash">
+		eval(args);
+		</script>
+		<![endif]-->
+	</head>
+	<body>
+		<h1>JS Flash MP3 Plaxer</h1>
+		<object id="myFlash" type="application/x-shockwave-flash" data="player_mp3_js.swf" width="1" height="1">
+			<param name="movie" value="player_mp3_js.swf" />
+			<param name="AllowScriptAccess" value="always" />
+			<param name="FlashVars" value="listener=myListener&amp;interval=500" />
+			<p>Texte alternatif</p>
+		</object>
+		<div id="playerplay" class="button play"><a href="javascript:load()">load</a></div>
+		<div id="player">
+			<div id="playerplay" class="button play"><a href="javascript:play()">PLAY</a></div>
+			<div id="playerpause" class="button pause"><a href="javascript:pause()">PAUSE</a></div>
+			<div id="playerstop" class="button stop"><a href="javascript:stop()">STOP</a></div>
+			<div id="timeline"><a id="playerslider" href="javascript:void(0);">SLIDER</a></div>
+		</div>
+		<h2>Informations</h2>
+		<ul>
+			<li>url : <span id="info_url">undefined</span></li>
+			<li>isPlaying : <span id="info_playing">undefined</span></li>
+			<li>bytes : <span id="info_bytes">undefined</span></li>
+			<li>position : <span id="info_position">undefined</span></li>
+			<li>duration : <span id="info_duration">undefined</span></li>
+			<li>volume : <span id="info_volume">undefined</span></li>
+			
+			<li>ID3 Artist : <span id="info_id3_artist">undefined</span></li>
+			<li>ID3 Album : <span id="info_id3_album">undefined</span></li>
+			<li>ID3 Songname : <span id="info_id3_songname">undefined</span></li>
+			<li>ID3 Genre : <span id="info_id3_genre">undefined</span></li>
+			<li>ID3 Year : <span id="info_id3_year">undefined</span></li>
+			<li>ID3 Track : <span id="info_id3_track">undefined</span></li>
+			<li>ID3 Comment : <span id="info_id3_comment">undefined</span></li>
+		</ul>
+	</body>
+</html>
